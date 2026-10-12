@@ -1,0 +1,24 @@
+services:
+  subharbor:
+    build: .
+    image: subharbor:local
+    ports:
+      - '127.0.0.1:3000:3000'
+    env_file: .env
+    environment:
+      SUBHARBOR_DATA_DIR: /data
+      HOST: 0.0.0.0
+    volumes:
+      - subharbor-data:/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    mem_limit: 512m
+    pids_limit: 64
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  subharbor-data:

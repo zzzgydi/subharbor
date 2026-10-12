@@ -1,0 +1,33 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.21.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm exec tsx scripts/kernel-fixtures.ts /tmp/subharbor-kernels
+      - run: docker run --rm --network none --memory 256m --cap-drop ALL -v /tmp/subharbor-kernels:/configs:ro metacubex/mihomo:v1.19.32 -t -f /configs/mihomo.yaml -d /tmp
+      - run: docker run --rm --network none --memory 256m --cap-drop ALL -v /tmp/subharbor-kernels:/configs:ro ghcr.io/sagernet/sing-box:v1.14.2 check -c /configs/sing-box.json
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t subharbor:ci .
