@@ -1,0 +1,52 @@
+{
+  "name": "subharbor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@11.21.0",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env --import tsx --watch apps/server/src/index.ts",
+    "dev:web": "rsbuild dev --config apps/web/rsbuild.config.ts",
+    "build": "pnpm typecheck && node scripts/build.mjs && rsbuild build --config apps/web/rsbuild.config.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node scripts/build.mjs && tsx --test tests/*.test.ts",
+    "start": "node --env-file-if-exists=.env dist/server.js",
+    "password": "tsx scripts/password.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "demo": "pnpm build && tsx scripts/demo.ts"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.1.3",
+    "@fastify/rate-limit": "10.3.0",
+    "@fastify/static": "8.3.0",
+    "better-sqlite3": "13.0.3",
+    "cron-parser": "5.10.2",
+    "drizzle-orm": "0.45.4",
+    "fastify": "5.12.5",
+    "ipaddr.js": "2.5.0",
+    "quickjs-emscripten": "0.32.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "yaml": "2.9.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "2.2.12",
+    "@rsbuild/plugin-react": "2.1.1",
+    "@testing-library/react": "16.3.3",
+    "@types/better-sqlite3": "9.6.0",
+    "@types/node": "24.19.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "esbuild": "0.28.2",
+    "happy-dom": "20.14.6",
+    "prettier": "3.9.9",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  }
+}
