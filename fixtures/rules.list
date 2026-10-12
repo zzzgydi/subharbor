@@ -1,0 +1,3 @@
+# Synthetic examples only
+DOMAIN-SUFFIX,corp.example,DIRECT
+IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
